@@ -8,9 +8,9 @@
                             class="opacity-75 me-2">Created_at:</span><strong>{{ $note['created_at'] }}</strong></small>
                 </div>
                 <div class="col text-end">
-                    <a href="#" class="btn btn-outline-secondary btn-sm mx-1"><i
+                    <a href="/edit/{{ Crypt::encrypt($note['id']) }}" class="btn btn-outline-secondary btn-sm mx-1"><i
                             class="fa-regular fa-pen-to-square"></i></a>
-                    <a href="#" class="btn btn-outline-danger btn-sm mx-1"><i
+                    <a href="/delete/{{ Crypt::encrypt($note['id']) }}" class="btn btn-outline-danger btn-sm mx-1"><i
                             class="fa-regular fa-trash-can"></i></a>
                 </div>
             </div>
