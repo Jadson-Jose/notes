@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\Operations;
-use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
-use Symfony\Component\CssSelector\XPath\Extension\FunctionExtension;
 
 class MainController extends Controller
 {
@@ -24,7 +21,12 @@ class MainController extends Controller
 
     public function newNote()
     {
-        echo "I'm creating new note.";
+        return view('new_note');
+    }
+
+    public function newNoteSubmit(Request $request)
+    {
+        echo "I'm creating a new note.";
     }
 
     public function editNote($id)
