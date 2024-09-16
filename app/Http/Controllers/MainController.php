@@ -31,13 +31,30 @@ class MainController extends Controller
 
     public function editNote($id)
     {
+ 032
         $id = Operations::decryptId($id);
+        001
         echo "I'm editing note with id = $id";
     }
 
     public function deleteNote($id)
     {
+ 032
         $id = Operations::decryptId($id);
         echo "I'm deleting note with id = $id";
+
+
+        echo "I'm deleting note with id = $id";
+    }
+
+    private function decryptId($id){
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->route('home');
+        }
+
+        return $id;
+ 001
     }
 }
