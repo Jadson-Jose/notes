@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Note;
 use App\Models\User;
 use App\Services\Operations;
 use Illuminate\Http\Request;
@@ -26,35 +27,49 @@ class MainController extends Controller
 
     public function newNoteSubmit(Request $request)
     {
-        echo "I'm creating a new note.";
+        $request->validate(
+            [
+                'text_title' => 'required|min:3|max:200',
+                'text_note' => 'required|min:3|max:3000'
+            ],
+            [
+                'text_title.required' => 'O título é obrigatório.',
+                'text_title.min' => 'O título deve ter pelo menos :min caracteres.',
+                'text_title.max' => 'O título deve ter no máximo :max caracteres.',
+
+                'text_note.required' => 'A nota é obrigatória.',
+                'text_note.min' => 'A nota deve ter pelo menos :min caracteres.',
+                'text_note.max' => 'A nota deve ter no máximo :max caracteres.'
+            ]
+        );
+
+        $id = session('user.id');
+
+        // create new note
+        $note = new Note();
+        $note->user_id = $id;
+        $note->title = $request->text_title;
+        $note->text = $request->text_note;
+        $note->save();
+
+        return redirect()->route('home');
     }
 
     public function editNote($id)
     {
- 032
+
         $id = Operations::decryptId($id);
-        001
+
         echo "I'm editing note with id = $id";
     }
 
     public function deleteNote($id)
     {
- 032
+
         $id = Operations::decryptId($id);
         echo "I'm deleting note with id = $id";
 
 
         echo "I'm deleting note with id = $id";
-    }
-
-    private function decryptId($id){
-        try {
-            $id = Crypt::decrypt($id);
-        } catch (DecryptException $e) {
-            return redirect()->route('home');
-        }
-
-        return $id;
- 001
     }
 }
