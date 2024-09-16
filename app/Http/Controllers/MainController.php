@@ -26,13 +26,13 @@ class MainController extends Controller
 
     public function editNote($id)
     {
-        $id = $this->decryptId($id);
+
         echo "I'm editing note with id = $id";
     }
 
     public function deleteNote($id)
     {
-        $id = $this->decryptId($id);
+
         echo "I'm deleting note with id = $id";
     }
 
