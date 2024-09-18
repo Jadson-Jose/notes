@@ -7,6 +7,7 @@ use App\Models\Note;
 use App\Models\User;
 use App\Services\Operations;
 use Illuminate\Http\Request;
+use Mockery\Matcher\Not;
 
 class MainController extends Controller
 {
@@ -14,7 +15,11 @@ class MainController extends Controller
     {
         // load  user's notes
         $id = session('user.id');
-        $notes = User::find($id)->notes()->get()->toArray();
+        $notes = User::find($id)
+            ->notes()
+            ->whereNull('deleted_at')
+            ->get()
+            ->toArray();
 
         // show the view
         return view('home', ['notes' => $notes]);
@@ -106,9 +111,30 @@ class MainController extends Controller
     {
 
         $id = Operations::decryptId($id);
-        echo "I'm deleting note with id = $id";
 
+        // load note
+        $note = Note::find($id);
 
-        echo "I'm deleting note with id = $id";
+        // show delete note confirmation
+        return view('delete_note', ['note' => $note]);
+    }
+
+    public function deleteNoteConfirm($id)
+    {
+
+        // check if $id is encrypted
+        $id = Operations::decryptId($id);
+
+        // load note
+        $note = Note::find($id);
+
+        // 1. hard delete
+        // $note->delete();
+
+        // 2. soft delete
+        $note->deleted_at = date('Y:m:d H:i:s');
+        $note->save();
+
+        return redirect()->route('home');
     }
 }
